@@ -1,0 +1,126 @@
+<div class="dental-image-processor">
+  <div class="header">
+    <h2>Xử lý ảnh nha khoa</h2>
+    <p class="instruction">Click vào các vùng răng (bounding box) để đánh dấu bằng dấu X màu đỏ</p>
+  </div>
+
+  <!-- Input để load ảnh base64 -->
+  <div class="image-input-section">
+    <h3>Load ảnh từ Base64</h3>
+    <div class="input-group">
+      <textarea 
+        #base64Input
+        class="base64-input" 
+        placeholder="Paste chuỗi base64 của ảnh vào đây (bắt đầu với data:image/...)"
+        rows="3">
+      </textarea>
+      <button 
+        class="btn btn-primary" 
+        (click)="loadImageFromInput(base64Input.value)">
+        Load ảnh
+      </button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Canvas chính để hiển thị và xử lý ảnh -->
+    <div class="canvas-container">
+      <h3>Ảnh gốc với bounding boxes</h3>
+      <canvas 
+        #canvas 
+        class="main-canvas"
+        [style.cursor]="'crosshair'">
+      </canvas>
+      
+      <div class="canvas-info">
+        <p><strong>Hướng dẫn:</strong></p>
+        <ul>
+          <li>Click vào vùng răng (khung xanh) để đánh dấu</li>
+          <li>Click lại để bỏ đánh dấu</li>
+          <li>Chỉ có thể click trong vùng bounding box</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Thông tin và điều khiển -->
+    <div class="controls-container">
+      <div class="marked-teeth-info">
+        <h4>Răng đã đánh dấu:</h4>
+        <div class="marked-list">
+          <span 
+            *ngFor="let toothId of getMarkedTeethIds()" 
+            class="marked-tooth-badge">
+            Răng {{ toothId }}
+          </span>
+          <span *ngIf="getMarkedTeethIds().length === 0" class="no-marks">
+            Chưa có răng nào được đánh dấu
+          </span>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button 
+          class="btn btn-primary" 
+          (click)="saveImage()"
+          [disabled]="markedTeeth.length === 0">
+          <i class="icon-save"></i>
+          Lưu ảnh
+        </button>
+        
+        <button 
+          class="btn btn-secondary" 
+          (click)="clearMarks()"
+          [disabled]="markedTeeth.length === 0">
+          <i class="icon-clear"></i>
+          Xóa tất cả dấu X
+        </button>
+        
+        <button 
+          class="btn btn-success" 
+          (click)="downloadImage()"
+          [disabled]="!savedImageBase64">
+          <i class="icon-download"></i>
+          Tải xuống
+        </button>
+        
+        <button class="btn btn-info" (click)="forceRedraw()">
+          🔄 Vẽ lại
+        </button>
+        
+        <button class="btn btn-warning" (click)="checkStatus()">
+          🔍 Kiểm tra
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preview ảnh đã lưu -->
+  <div class="preview-section" *ngIf="savedImageBase64">
+    <h3>Preview ảnh đã lưu</h3>
+    <div class="preview-container">
+      <canvas #previewCanvas class="preview-canvas"></canvas>
+      <div class="preview-info">
+        <p><strong>Base64 đã tạo:</strong></p>
+        <textarea 
+          class="base64-output" 
+          [value]="savedImageBase64" 
+          readonly
+          placeholder="Base64 sẽ hiển thị ở đây sau khi lưu ảnh">
+        </textarea>
+        <small class="text-muted">
+          Bạn có thể copy base64 này để lưu vào backend
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thông tin debug (có thể ẩn trong production) -->
+  <div class="debug-info" *ngIf="false">
+    <h4>Debug Information:</h4>
+    <div class="debug-content">
+      <p><strong>Số bounding boxes:</strong> {{ boundingBoxes.length }}</p>
+      <p><strong>Số răng đã đánh dấu:</strong> {{ markedTeeth.length }}</p>
+      <p><strong>Canvas size:</strong> {{ canvasWidth }} x {{ canvasHeight }}</p>
+    </div>
+  </div>
+</div>

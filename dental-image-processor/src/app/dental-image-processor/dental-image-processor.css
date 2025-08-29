@@ -1,0 +1,394 @@
+.dental-image-processor {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Image Input Section */
+.image-input-section {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-input-section h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.input-group {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.base64-input {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  resize: vertical;
+  background: #f8f9fa;
+  color: #495057;
+  min-height: 80px;
+}
+
+.base64-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .input-group {
+    flex-direction: column;
+  }
+  
+  .input-group .btn {
+    align-self: stretch;
+  }
+}
+
+.header h2 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.instruction {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* Main Content */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Canvas Container */
+.canvas-container {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.canvas-container h3 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.main-canvas {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f9f9f9;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+}
+
+.main-canvas:hover {
+  border-color: #007bff;
+}
+
+.canvas-info {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 4px solid #007bff;
+}
+
+.canvas-info p {
+  margin: 0 0 10px 0;
+  color: #495057;
+  font-weight: 600;
+}
+
+.canvas-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.canvas-info li {
+  margin-bottom: 5px;
+  color: #6c757d;
+}
+
+/* Controls Container */
+.controls-container {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+/* Marked Teeth Info */
+.marked-teeth-info {
+  margin-bottom: 25px;
+}
+
+.marked-teeth-info h4 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.marked-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.marked-tooth-badge {
+  background: #dc3545;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  animation: fadeIn 0.3s ease;
+}
+
+.no-marks {
+  color: #6c757d;
+  font-style: italic;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  display: block;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #6c757d, #495057);
+  color: white;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #28a745, #1e7e34);
+  color: white;
+}
+
+/* Icons (simple CSS icons) */
+.icon-save::before { content: "💾"; }
+.icon-clear::before { content: "🗑️"; }
+.icon-download::before { content: "⬇️"; }
+
+/* Preview Section */
+.preview-section {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.preview-section h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.preview-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .preview-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preview-canvas {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.preview-info {
+  min-width: 0;
+}
+
+.preview-info p {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.base64-output {
+  width: 100%;
+  height: 120px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  resize: vertical;
+  background: #f8f9fa;
+  color: #495057;
+}
+
+.base64-output:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.text-muted {
+  color: #6c757d;
+  font-size: 12px;
+  margin-top: 8px;
+  display: block;
+}
+
+/* Debug Info */
+.debug-info {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+.debug-info h4 {
+  margin: 0 0 10px 0;
+  color: #495057;
+  font-size: 16px;
+}
+
+.debug-content p {
+  margin: 5px 0;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .dental-image-processor {
+    padding: 10px;
+  }
+  
+  .header {
+    padding: 15px;
+  }
+  
+  .header h2 {
+    font-size: 24px;
+  }
+  
+  .canvas-container,
+  .controls-container,
+  .preview-section {
+    padding: 15px;
+  }
+  
+  .main-canvas {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Loading and transition effects */
+.dental-image-processor * {
+  box-sizing: border-box;
+}
+
+/* Smooth transitions for all interactive elements */
+.dental-image-processor button,
+.dental-image-processor canvas,
+.dental-image-processor textarea {
+  transition: all 0.3s ease;
+}
+
+/* Focus styles for accessibility */
+.dental-image-processor button:focus,
+.dental-image-processor textarea:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}

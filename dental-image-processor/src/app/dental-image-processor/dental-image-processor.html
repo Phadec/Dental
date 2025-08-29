@@ -4,24 +4,6 @@
     <p class="instruction">Click vào các vùng răng (bounding box) để đánh dấu bằng dấu X màu đỏ</p>
   </div>
 
-  <!-- Input để load ảnh base64 -->
-  <div class="image-input-section">
-    <h3>Load ảnh từ Base64</h3>
-    <div class="input-group">
-      <textarea 
-        #base64Input
-        class="base64-input" 
-        placeholder="Paste chuỗi base64 của ảnh vào đây (bắt đầu với data:image/...)"
-        rows="3">
-      </textarea>
-      <button 
-        class="btn btn-primary" 
-        (click)="loadImageFromInput(base64Input.value)">
-        Load ảnh
-      </button>
-    </div>
-  </div>
-
   <div class="main-content">
     <!-- Canvas chính để hiển thị và xử lý ảnh -->
     <div class="canvas-container">
@@ -81,14 +63,6 @@
           [disabled]="!savedImageBase64">
           <i class="icon-download"></i>
           Tải xuống
-        </button>
-        
-        <button class="btn btn-info" (click)="forceRedraw()">
-          🔄 Vẽ lại
-        </button>
-        
-        <button class="btn btn-warning" (click)="checkStatus()">
-          🔍 Kiểm tra
         </button>
       </div>
     </div>

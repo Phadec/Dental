@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 interface BoundingBox {
@@ -66,7 +66,10 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
   canvasWidth = 500;
   canvasHeight = 300;
 
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+  constructor(
+    @Inject(PLATFORM_ID) platformId: Object,
+    private cdr: ChangeDetectorRef
+  ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
@@ -109,8 +112,6 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
       
       console.log('Canvas initialized successfully:', this.canvas.width, 'x', this.canvas.height);
       
-      // Bắt đầu interval để kiểm tra canvas
-      this.startCanvasMonitoring();
     } catch (error) {
       console.error('Error initializing canvas:', error);
     }
@@ -272,6 +273,9 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
       
       // Vẽ lại canvas
       this.drawCanvas();
+      
+      // Trigger change detection để cập nhật UI
+      this.cdr.detectChanges();
     }
   }
 
@@ -360,89 +364,11 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
     return this.markedTeeth.map(tooth => tooth.boundingBoxId);
   }
 
-  // Phương thức để bắt đầu monitoring canvas
-  private startCanvasMonitoring(): void {
-    if (this.redrawInterval) {
-      clearInterval(this.redrawInterval);
-    }
-    
-    this.redrawInterval = setInterval(() => {
-      if (this.isBrowser && this.canvas && this.ctx) {
-        try {
-          // Kiểm tra xem canvas có còn content không
-          const imageData = this.ctx.getImageData(0, 0, 10, 10);
-          const isEmpty = imageData.data.every(value => value === 0);
-          
-          if (isEmpty && this.image) {
-            console.log('Canvas is empty, redrawing...');
-            this.drawCanvas();
-          } else if (isEmpty && this.lastCanvasData) {
-            console.log('Canvas is empty, restoring from backup...');
-            this.restoreFromBackup();
-          }
-        } catch (error) {
-          console.log('Error checking canvas, reinitializing...');
-          this.initializeCanvas();
-          if (this.image) {
-            this.drawCanvas();
-          }
-        }
-      }
-    }, 2000); // Kiểm tra mỗi 2 giây
-  }
-
-  // Phương thức để restore canvas từ backup
-  private restoreFromBackup(): void {
-    if (!this.lastCanvasData || !this.canvas || !this.ctx) return;
-    
-    const backupImage = new Image();
-    backupImage.onload = () => {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.drawImage(backupImage, 0, 0);
-      console.log('Canvas restored from backup');
-    };
-    backupImage.src = this.lastCanvasData;
-  }
-
   // Dọn dẹp khi component bị destroy
   ngOnDestroy(): void {
     if (this.redrawInterval) {
       clearInterval(this.redrawInterval);
     }
-  }
-
-  // Phương thức để force redraw canvas
-  forceRedraw(): void {
-    if (!this.isBrowser) return;
-    
-    console.log('Force redraw called');
-    
-    // Kiểm tra và khôi phục canvas nếu cần
-    if (!this.canvas || !this.ctx) {
-      console.log('Canvas lost, reinitializing...');
-      this.initializeCanvas();
-    }
-    
-    // Nếu không có image, tạo lại sample image
-    if (!this.image) {
-      console.log('Image lost, recreating sample image...');
-      this.loadSampleImage();
-    } else {
-      this.drawCanvas();
-    }
-  }
-
-  // Phương thức để kiểm tra trạng thái
-  checkStatus(): void {
-    console.log('Canvas status:', {
-      isBrowser: this.isBrowser,
-      hasCanvas: !!this.canvas,
-      hasCtx: !!this.ctx,
-      hasImage: !!this.image,
-      imageBase64Length: this.imageBase64.length,
-      canvasWidth: this.canvas?.width,
-      canvasHeight: this.canvas?.height
-    });
   }
 
   // Getter để lấy base64 của ảnh đã lưu

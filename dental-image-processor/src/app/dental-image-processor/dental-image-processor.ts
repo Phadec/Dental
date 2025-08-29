@@ -236,11 +236,13 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
   }
 
   private onCanvasClick(event: MouseEvent): void {
-    if (!this.isBrowser) return;
+    if (!this.isBrowser || !this.canvas || !this.ctx) return;
     
     const rect = this.canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
+    
+    console.log('Click position:', { x, y }); // Debug log
     
     // Kiểm tra xem click có nằm trong bounding box nào không
     const clickedBox = this.boundingBoxes.find(box => 
@@ -249,6 +251,8 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
     );
     
     if (clickedBox) {
+      console.log('Clicked box:', clickedBox.id); // Debug log
+      
       // Kiểm tra xem răng này đã được đánh dấu chưa
       const existingMarkIndex = this.markedTeeth.findIndex(
         tooth => tooth.boundingBoxId === clickedBox.id
@@ -258,6 +262,7 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
         // Nếu đã đánh dấu thì bỏ đánh dấu
         this.markedTeeth.splice(existingMarkIndex, 1);
         clickedBox.isMarked = false;
+        console.log('Removed mark for tooth:', clickedBox.id);
       } else {
         // Nếu chưa đánh dấu thì thêm dấu X
         const centerX = clickedBox.x + clickedBox.width / 2;
@@ -269,12 +274,16 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
           y: centerY
         });
         clickedBox.isMarked = true;
+        console.log('Added mark for tooth:', clickedBox.id);
       }
+      
+      console.log('Current markedTeeth:', this.markedTeeth); // Debug log
       
       // Vẽ lại canvas
       this.drawCanvas();
       
-      // Trigger change detection để cập nhật UI
+      // QUAN TRỌNG: Force change detection
+      this.cdr.markForCheck();
       this.cdr.detectChanges();
     }
   }

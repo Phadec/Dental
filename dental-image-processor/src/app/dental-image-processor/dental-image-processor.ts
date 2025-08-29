@@ -28,7 +28,6 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
 
   private isBrowser: boolean;
 
-  // Dữ liệu mẫu - thay thế chuỗi base64 này bằng hình ảnh của bạn
   imageBase64: string = this.getDefaultImage();
   boundingBoxes: BoundingBox[] = [
     { id: 1, x: 60, y: 165, width: 10, height: 10 },
@@ -148,7 +147,6 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
       alert('Không thể load hình ảnh. Vui lòng kiểm tra chuỗi base64.');
     };
     
-    // Set crossOrigin để tránh CORS issues
     newImage.crossOrigin = 'anonymous';
     newImage.src = base64;
   }
@@ -281,8 +279,6 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
       
       // Vẽ lại canvas
       this.drawCanvas();
-      
-      // QUAN TRỌNG: Force change detection
       this.cdr.markForCheck();
       this.cdr.detectChanges();
     }
@@ -318,8 +314,6 @@ export class DentalImageProcessor implements AfterViewInit, OnDestroy {
     this.markedTeeth = [];
     this.boundingBoxes.forEach(box => box.isMarked = false);
     this.drawCanvas();
-    
-    // Trigger change detection để cập nhật UI
     this.cdr.detectChanges();
   }
 

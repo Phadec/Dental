@@ -246,10 +246,27 @@
   color: white;
 }
 
+.btn-info {
+  background: linear-gradient(135deg, #17a2b8, #117a8b);
+  color: white;
+}
+
+/* File Upload Section */
+.file-upload-section {
+  margin-top: 10px;
+}
+
+.file-upload-section .btn {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
 /* Icons (simple CSS icons) */
 .icon-save::before { content: "💾"; }
 .icon-clear::before { content: "🗑️"; }
 .icon-download::before { content: "⬇️"; }
+.icon-upload::before { content: "📁"; }
 
 /* Preview Section */
 .preview-section {

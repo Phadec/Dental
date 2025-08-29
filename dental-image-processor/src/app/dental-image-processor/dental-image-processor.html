@@ -62,8 +62,21 @@
           (click)="downloadImage()"
           [disabled]="!savedImageBase64">
           <i class="icon-download"></i>
-          Tải xuống
+          Tải xuống ảnh & dữ liệu
         </button>
+        
+        <div class="file-upload-section">
+          <label for="jsonFileInput" class="btn btn-info">
+            <i class="icon-upload"></i>
+            Tải dữ liệu răng từ JSON
+          </label>
+          <input 
+            type="file" 
+            id="jsonFileInput"
+            accept=".json"
+            (change)="onJsonFileSelected($event)"
+            style="display: none;">
+        </div>
       </div>
     </div>
   </div>
